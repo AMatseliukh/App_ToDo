@@ -1,3 +1,4 @@
+// import { useRouter } from "expo-router";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -11,6 +12,7 @@ interface HeaderProps {
   hideActionMenuIcon?: boolean;
 }
 
+// const router = useRouter();
 const Header: React.FC<HeaderProps> = ({
   title,
   backIcon,
@@ -20,6 +22,9 @@ const Header: React.FC<HeaderProps> = ({
   hideBackIcon = false,
   hideActionMenuIcon = false,
 }) => {
+  // const handleGoBack = () => {
+  //   router.back();
+  // };
   return (
     <View style={styles.wrapper}>
       {/* Back Icon */}
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 64,
-    paddingHorizontal: 8,
+    // paddingHorizontal: 8,
     backgroundColor: "white",
   },
   iconWrapper: {
