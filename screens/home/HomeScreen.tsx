@@ -22,7 +22,7 @@ import Recent from './components/Recent';
   const recentDecksGroupItemIndex = '1';
   const listItemsStartId = 5;
   const excludedIds = ['1', '2', '3', '4'];
-  const recentItems = folderStructure.filter((item) => item.isrecentItem);
+  const recentItems = folderStructure.filter((item) => item.isRecentItem);
   const recentTitleItem = folderStructure.find(
     (item) => item.id === recentDecksGroupItemIndex,
   );

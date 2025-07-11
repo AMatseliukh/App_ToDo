@@ -1,11 +1,11 @@
 interface FolderItem {
-  isrecentItem: unknown;
+  // isrecentItem: unknown;
   id: string;
   leadingElement: string;
   text: string;
   textDescr: string;
   trailingElement: string | null;
-  isAccordionItem?: boolean;
+  isRecentItem?: boolean;
 }
 
 export const folderStructure: FolderItem[] = [
@@ -22,7 +22,7 @@ export const folderStructure: FolderItem[] = [
     text: 'Chapter 1',
     textDescr: 'PockVoc → English for Everyone Course...',
     trailingElement: 'GloboIcon',
-    isAccordionItem: true,
+    isRecentItem: true,
   },
   {
     id: '3',
@@ -30,7 +30,7 @@ export const folderStructure: FolderItem[] = [
     text: 'Marvel heroes',
     textDescr: 'PockVoc',
     trailingElement: '',
-    isAccordionItem: true,
+    isRecentItem: true,
   },
   {
     id: '4',
@@ -38,7 +38,7 @@ export const folderStructure: FolderItem[] = [
     text: 'Unit1',
     textDescr: 'Halyna Fedorivna → Opportunities 11 form',
     trailingElement: 'GloboIcon',
-    isAccordionItem: true,
+    isRecentItem: true,
   },
   {
     id: '5',
