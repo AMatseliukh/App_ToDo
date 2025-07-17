@@ -31,7 +31,7 @@ const Recent: FC<Props> = ({ title, data }) => {
       duration: 300,
       easing: Easing.inOut(Easing.ease),
     });
-  },[expanded]);
+  },[expanded, rotation]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value * 180}deg` }],

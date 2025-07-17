@@ -1,20 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { View,
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Easing,
   FlatList,
+  Pressable,
   ScrollView,
-  StyleSheet, } from 'react-native';
-import PlusIcon from '@/assets/icons/PlusIcon';
-import Header from '../../components/Header';
-import FloatingMenu from '@/screens/home/components/FloatingMenu';
+  StyleSheet,
+  View,
+} from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { folderStructure } from '../../dataFolder'
+
+import { folderStructure } from '../../dataFolder';
+import Header from '../../components/Header';
+import PlusIcon from '@/assets/icons/PlusIcon';
+import FloatingMenu from '@/screens/home/components/FloatingMenu';
 import ListItem from './components/ListItem';
 import Recent from './components/Recent';
-import { ActivityIndicator } from 'react-native-paper';
+// import Animated from 'react-native-reanimated';
+
+const recentDecksGroupItemIndex = '1';
+  const listItemsStartId = 5;
+  const excludedIds = ['1', '2', '3', '4'];
+
+  const recentItems = folderStructure.filter((item) => item.isRecentItem);
+  const recentTitleItem = folderStructure.find(
+    (item) => item.id === recentDecksGroupItemIndex,
+  );
+  const recentTitle = recentTitleItem?.text || 'Recent';
+
+  const listItems = folderStructure.filter(
+  (item) => Number(item.id) >= listItemsStartId,
+);
 
 const HomeScreen = () => {
 
   const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(folderStructure);
   const router = useRouter();
@@ -23,25 +45,66 @@ const HomeScreen = () => {
   const handleGoBack = () => {
     router.back();
   };
-
-  const recentDecksGroupItemIndex = '1';
-  const listItemsStartId = 5;
-  const excludedIds = ['1', '2', '3', '4'];
-
-    const recentItems = folderStructure.filter((item) => item.isrecentItem);
-  const recentTitleItem = folderStructure.find(
-    (item) => item.id === recentDecksGroupItemIndex,
-  );
-  const recentTitle = recentTitleItem?.text || 'Recent';
-
   const flatListData = filteredData.filter(
-    (item) => !excludedIds.includes(item.id) && Number(item.id) >= listItemsStartId,
+    (item) => !excludedIds.includes(item.id),
   );
+
+  // const flatListData = filteredData.filter(
+  //   (item) => !excludedIds.includes(item.id) && Number(item.id) >= listItemsStartId,
+  // );
+
+  const rotation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(rotation, {
+      toValue: expanded ? 1 : 0,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [expanded, rotation]);
+
+  const rotateInterpolate = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+  const animatedStyle = {
+    transform: [{ rotate: rotateInterpolate }],
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const renderContent = () => (
     <View style={{ paddingHorizontal: 8 }}>
       {/* Акордеон Recent */}
-      <Recent title={recentTitle} data={recentItems} />
+      <Pressable
+        className="flex-row items-center justify-between h-20 w-full"
+        onPress={() => setExpanded(!expanded)}
+      >
+        <Recent title={recentTitle} data={recentItems} />
+        {/* <Pressable onPress={() => setExpanded(!expanded)}>
+          <Animated.View style={animatedStyle}>
+            <IconButton icon="arrow-left" size={24} />
+          </Animated.View>
+        </Pressable> */}
+      </Pressable>
+
+      {/* Accordion Items */}
+      {expanded &&
+        recentItems.map((item) => (
+          <View key={item.id}>
+            <ListItem
+              name={item.text}
+              description={item.textDescr}
+              leadingIconName={item.leadingElement}
+              trailingIconName={item.trailingElement}
+              onItemPress={() => alert(`Accordion item pressed: ${item.id}`)}
+            />
+          </View>
+        ))}
 
       {/* FlatList */}
       <FlatList
@@ -101,7 +164,6 @@ const HomeScreen = () => {
           {renderContent()}
         </ScrollView>
       )}
-
 
     </View>
   );
