@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -6,15 +7,15 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { ActivityIndicator, Divider } from 'react-native-paper';
 
-import { folderStructure } from '../../dataFolder';
-import Header from '../../components/Header';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import FloatingMenu from '@/screens/home/components/FloatingMenu';
+import Header from '../../components/Header';
+import { folderStructure } from '../../dataFolder';
 import ListItem from './components/ListItem';
 import Recent from './components/Recent';
 // import Animated from 'react-native-reanimated';
@@ -27,7 +28,7 @@ const recentDecksGroupItemIndex = '1';
   const recentTitleItem = folderStructure.find(
     (item) => item.id === recentDecksGroupItemIndex,
   );
-  const recentTitle = recentTitleItem?.text || 'Recent';
+  const recentTitle = recentTitleItem?.text || 'Recent Deck';
 
   const listItems = folderStructure.filter(
   (item) => Number(item.id) >= listItemsStartId,
@@ -77,13 +78,13 @@ const HomeScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const renderContent = () => (
+  const recentContent = () => (
     <View style={{ paddingHorizontal: 8 }}>
-      {/* Акордеон Recent */}
+            {/* Акордеон Recent */}
       <Pressable
         className="flex-row items-center justify-between h-20 w-full"
         onPress={() => setExpanded(!expanded)}
-      >
+        >
         <Recent title={recentTitle} data={recentItems} />
         {/* <Pressable onPress={() => setExpanded(!expanded)}>
           <Animated.View style={animatedStyle}>
@@ -93,7 +94,7 @@ const HomeScreen = () => {
       </Pressable>
 
       {/* Accordion Items */}
-      {expanded &&
+        {expanded &&
         recentItems.map((item) => (
           <View key={item.id}>
             <ListItem
@@ -106,7 +107,12 @@ const HomeScreen = () => {
           </View>
         ))}
 
-      {/* FlatList */}
+    </View>
+  )
+
+  const listItemContent = () => (
+    <View style={{ paddingHorizontal: 8 }}>  
+            {/* FlatList */}
       <FlatList
         data={flatListData}
         keyExtractor={(item) => item.id}
@@ -122,8 +128,9 @@ const HomeScreen = () => {
         )}
         scrollEnabled={false}
       />
+
     </View>
-  );
+  )
 
   const floatingMenu = [
     {
@@ -155,13 +162,31 @@ const HomeScreen = () => {
         items={floatingMenu}
       />
 
+      {recentContent()};
+
+      <View style={{
+          height: 80,
+          paddingLeft: 12,
+          flexDirection: 'row',
+          alignItems: 'center',
+          // backgroundColor: '#cecece'
+          // justifyContent: 'flex-start'
+        }}>
+        <Text style={
+          {fontSize: 20,
+          fontWeight: '600',        
+          textAlign: 'left',}
+        }>All Items</Text>
+      </View>
+      <Divider style={{ backgroundColor: 'gray' }} />
+
       {loading ? (
         <View style={styles.loaderWrapper}>
           <ActivityIndicator animating={true} size="large" />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollWrapper}>
-          {renderContent()}
+          {listItemContent()}
         </ScrollView>
       )}
 

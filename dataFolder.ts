@@ -11,7 +11,7 @@ export const folderStructure: FolderItem[] = [
   {
     id: '1',
     leadingElement: '',
-    text: 'Recent',
+    text: 'Recent Deck',
     textDescr: '',
     trailingElement: 'ArrowDropDown',
     // isRecentItem: undefined
