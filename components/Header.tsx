@@ -1,4 +1,6 @@
 // import { useRouter } from "expo-router";
+import { Colors } from "@/constants/Colors";
+import BonusBadge from "@/screens/home/components/BonusBadge";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -47,6 +49,7 @@ const Header: React.FC<HeaderProps> = ({
         <Text style={styles.titleText} numberOfLines={1}>
           {title}
         </Text>
+        <BonusBadge />
       </View>
 
       {/* Action Menu Icon */}
@@ -91,13 +94,15 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: "center",
     alignItems: "center",
+    gap: 20,
   },
   titleText: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "black",
+    fontSize: 20,
+    fontWeight: "600",
+    color: Colors.titleText,
   },
 });
 
