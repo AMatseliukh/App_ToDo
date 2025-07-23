@@ -1,5 +1,5 @@
 import React, { FC, JSX } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 
 import ArchiveIcon from '../../../assets/icons/ArchiveIcon';
@@ -9,6 +9,8 @@ import CardsIcon from '../../../assets/icons/CardsIcon';
 import ChatIcon from '../../../assets/icons/ChatIcon';
 import FolderIcon from '../../../assets/icons/FolderIcon';
 import GloboIcon from '../../../assets/icons/GlobeIcon';
+import DotsVertical from '@/assets/icons/DotsVertical';
+import Repository from '@/assets/icons/Repository';
 
 const IconMap: Record<string, JSX.Element> = {
   FolderIcon: <FolderIcon />,
@@ -18,78 +20,84 @@ const IconMap: Record<string, JSX.Element> = {
   ArrowRight: <ArrowRight />,
   ArchiveIcon: <ArchiveIcon />,
   ChatIcon: <ChatIcon />,
+  DotsVertical: <DotsVertical />,
+  Repository: <Repository />,
 };
 
 interface Props {
   name: string;
-  description?: string;
-  leadingIconName?: string | null;
-  trailingIconName?: string | null;
+  type: "folder | deck | repository_folder | repository_deck";
+  // childrenCount: number;
+  isUnpublishedChangesPresent: boolean;
+  isOutOfSync: boolean;
+  isPublished: boolean;
+  description: string;
+  itemStatus: string;
+  typeIconName?: string | null;
+  actionIconName?: string | null;
   onItemPress?: () => void;
-  align?: 'left' | 'center';
 }
 
 const ListItem: FC<Props> = ({
   name,
+  type,
+  // childrenCount,
+  isUnpublishedChangesPresent,
+  isOutOfSync,
+  isPublished,
   description,
-  leadingIconName,
-  trailingIconName,
+  itemStatus,
+  typeIconName,
+  actionIconName,
   onItemPress,
-  align = 'left',
-}: Props) => {
-  const isCentered = align === 'center';
 
-  const LeadingIconComponent =
-    leadingIconName && IconMap[leadingIconName]
-      ? IconMap[leadingIconName]
+//   align = 'left',
+// }: Props) => {
+//   const isCentered = align === 'center';
+}) => {
+  const typeIconComponent =
+    typeIconName && IconMap[typeIconName]
+      ? IconMap[typeIconName]
       : null;
 
   const TrailingIconComponent =
-    trailingIconName && IconMap[trailingIconName]
-      ? IconMap[trailingIconName]
+    actionIconName && IconMap[actionIconName]
+      ? IconMap[actionIconName]
       : null;
 
   return (
     <View>
       <List.Item
         title={() => (
-          <Text
-            style={{
-              textAlign: isCentered ? 'center' : 'left',
-              fontSize: 16,
-              fontWeight: '500',
-              flexWrap: 'wrap',
-            }}
-            numberOfLines={3}
-          >
-            {name}
-          </Text>
-        )}
-        description={() =>
-          description ? (
-            <Text
-              style={{
-                textAlign: isCentered ? 'center' : 'left',
-                fontSize: 14,
-                color: '#6b7280',
-                flexWrap: 'wrap',
-              }}
-              numberOfLines={3}
-            >
-              {description}
+            <Text style={styles.heading3} numberOfLines={3}>
+              {name}
             </Text>
-          ) : null
-        }
-        onPress={onItemPress}
+          )}
+          description={() => (
+            <View>
+              {description ? (
+                <Text style={styles.textDescription} numberOfLines={3}>
+                  {description}
+                </Text>
+              ) : null}
+              {itemStatus ? (
+                <Text style={styles.itemStatus} numberOfLines={3}>
+                  {itemStatus}
+                </Text>
+              ) : null}
+            </View>
+  )}        onPress={onItemPress}
         titleNumberOfLines={3} // або undefined
         descriptionNumberOfLines={3} // або undefined
-        contentStyle={isCentered ? { alignItems: 'center' } : {}}
-        left={(props) =>
-          LeadingIconComponent ? (
+        // contentStyle={isCentered ? { alignItems: 'center' } : {}}
+        left={() =>
+          // typeIconComponent ? 
+          (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              {LeadingIconComponent}
+              {typeIconComponent}
             </View>
-          ) : null
+          ) 
+          // : null
         }
         right={(props) =>
           TrailingIconComponent ? (
@@ -116,5 +124,24 @@ const ListItem: FC<Props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  heading3: {
+    fontSize: 16,
+    color: '#09090B',
+    flexWrap: 'wrap',
+  },
+  textDescription: {
+    fontSize: 14,
+    color: '#71717a',
+  },
+  itemStatus: {
+    color: '#d97706',
+    fontSize: 12,
+  }
+
+})
+
+
 
 export default ListItem;

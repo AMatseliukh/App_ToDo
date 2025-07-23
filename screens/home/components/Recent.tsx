@@ -1,25 +1,28 @@
+import { Colors } from '@/constants/Colors';
 import React, { FC, useEffect, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import ListItem from './ListItem';
 
 interface RecentItem {
   id: string;
-  text: string;
+  name: string;
+  description: string;
   textDescr?: string;
-  leadingElement?: string | null;
-  trailingElement?: string | null;
+  typeIcon?: string | null;
+  actionElement?: string | null;
 }
 
 interface Props {
   title: string;
   data: RecentItem[];
+  description: string;
 }
 
 const Recent: FC<Props> = ({ title, data }) => {
@@ -54,12 +57,11 @@ const Recent: FC<Props> = ({ title, data }) => {
         data.map((item) => (
           <View key={item.id}>
             <ListItem
-              name={item.text}
-              description={item.textDescr}
-              leadingIconName={item.leadingElement}
-              trailingIconName={item.trailingElement}
-              onItemPress={() => alert(`Pressed: ${item.text}`)}
-            />
+              name={item.name}
+              description=''
+              typeIconName={item.typeIcon}
+              actionIconName={item.actionElement}
+              onItemPress={() => alert(`Pressed: ${item.name}`)} type={'folder | deck | repository_folder | repository_deck'} childrenCount={0} isUnpublishedChangesPresent={false} isOutOfSync={false} isPublished={false}            />
           </View>
         ))}
     </View>
@@ -76,16 +78,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 64,
-    paddingHorizontal: 16,
   },
   titleContainer: {
     flex: 1, 
     justifyContent: 'center',
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
-    textAlign: 'center',
+    textAlign: 'left',
+    color: Colors.h2,
   },
   divider: {
     marginRight: 48,

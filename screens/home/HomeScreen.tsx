@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import Fuse from 'fuse.js';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -13,11 +14,14 @@ import {
 import { ActivityIndicator, Divider } from 'react-native-paper';
 
 import PlusIcon from '@/assets/icons/PlusIcon';
+import { Colors } from '@/constants/Colors';
 import FloatingMenu from '@/screens/home/components/FloatingMenu';
 import Header from '../../components/Header';
 import { folderStructure } from '../../dataFolder';
-import ListItem from './components/ListItem';
+// import ListItem from './components/ListItem';
 import Recent from './components/Recent';
+import SearchInput from './components/SearchInput';
+import ListItem from './components/ListItem';
 // import Animated from 'react-native-reanimated';
 
 const recentDecksGroupItemIndex = '1';
@@ -28,11 +32,16 @@ const recentDecksGroupItemIndex = '1';
   const recentTitleItem = folderStructure.find(
     (item) => item.id === recentDecksGroupItemIndex,
   );
-  const recentTitle = recentTitleItem?.text || 'Recent Deck';
+  const recentTitle = recentTitleItem?.name || 'Recent Deck';
 
   const listItems = folderStructure.filter(
   (item) => Number(item.id) >= listItemsStartId,
 );
+
+const fuse = new Fuse(folderStructure, {
+  keys: ['name', 'textDescr'],
+  threshold: 0.3, // чутливість
+});
 
 const HomeScreen = () => {
 
@@ -78,37 +87,49 @@ const HomeScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const recentContent = () => (
-    <View style={{ paddingHorizontal: 8 }}>
-            {/* Акордеон Recent */}
-      <Pressable
-        className="flex-row items-center justify-between h-20 w-full"
-        onPress={() => setExpanded(!expanded)}
-        >
-        <Recent title={recentTitle} data={recentItems} />
-        {/* <Pressable onPress={() => setExpanded(!expanded)}>
-          <Animated.View style={animatedStyle}>
-            <IconButton icon="arrow-left" size={24} />
-          </Animated.View>
-        </Pressable> */}
-      </Pressable>
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim() === '') {
+      const filtered = folderStructure.filter(
+        (item) => !excludedIds.includes(item.id),
+      );
+      setFilteredData(filtered);
+    } else {
+      const results = fuse.search(query).map((result) => result.item);
+      const filtered = results.filter((item) => !excludedIds.includes(item.id));
+      setFilteredData(filtered);
+    }
+  };
 
-      {/* Accordion Items */}
-        {expanded &&
-        recentItems.map((item) => (
-          <View key={item.id}>
-            <ListItem
-              name={item.text}
-              description={item.textDescr}
-              leadingIconName={item.leadingElement}
-              trailingIconName={item.trailingElement}
-              onItemPress={() => alert(`Accordion item pressed: ${item.id}`)}
-            />
-          </View>
-        ))}
+  // const recentContent = () => (
+  //   <View style={{ paddingHorizontal: 8 }}>
+  //           {/* Акордеон Recent */}
+  //     <Pressable
+  //       className="flex-row items-center justify-between h-20 w-full"
+  //       onPress={() => setExpanded(!expanded)}
+  //       >
+  //       <Recent title={recentTitle} data={recentItems} />
+  //       {/* <Pressable onPress={() => setExpanded(!expanded)}>
+  //         <Animated.View style={animatedStyle}>
+  //           <IconButton icon="arrow-left" size={24} />
+  //         </Animated.View>
+  //       </Pressable> */}
+  //     </Pressable>
 
-    </View>
-  )
+  //     {/* Accordion Items */}
+  //       {expanded &&
+  //       recentItems.map((item) => (
+  //         <View key={item.id}>
+  //           <ListItem
+  //             name={item.name}
+  //             description={item.textDescr}
+  //             typeIconName={item.typeIcon}
+  //             actionIconName={item.actionElement}
+  //             onItemPress={() => alert(`Accordion item pressed: ${item.id}`)} type={'folder | deck | repository_folder | repository_deck'} childrenCount={0} isUnpublishedChangesPresent={false} isOutOfSync={false} isPublished={false}            />
+  //         </View>
+  //       ))}
+  //   </View>
+  // )
 
   const listItemContent = () => (
     <View style={{ paddingHorizontal: 8 }}>  
@@ -118,12 +139,17 @@ const HomeScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <ListItem
-            name={item.text}
-            description={item.textDescr}
-            leadingIconName={item.leadingElement}
-            trailingIconName={item.trailingElement}
-            align="left"
-            onItemPress={() => alert(`Item pressed: ${item.id}`)}
+            name={item.name}
+            description={item.childrenCount.toString() + ' ' + item.textDescr}
+            itemStatus={item.folderDeckStatus}
+            typeIconName={item.typeIcon}
+            actionIconName={item.actionElement}
+            onItemPress={() => alert(`Item pressed: ${item.id}`)} 
+            type={'folder | deck | repository_folder | repository_deck'} 
+            // childrenCount={0} 
+            isUnpublishedChangesPresent={false} 
+            isOutOfSync={false} 
+            isPublished={false}         
           />
         )}
         scrollEnabled={false}
@@ -162,22 +188,21 @@ const HomeScreen = () => {
         items={floatingMenu}
       />
 
-      {recentContent()};
-
-      <View style={{
-          height: 80,
-          paddingLeft: 12,
-          flexDirection: 'row',
-          alignItems: 'center',
-          // backgroundColor: '#cecece'
-          // justifyContent: 'flex-start'
-        }}>
-        <Text style={
-          {fontSize: 20,
-          fontWeight: '600',        
-          textAlign: 'left',}
-        }>All Items</Text>
+      {/* {recentContent()}; */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Recent Deck</Text>
       </View>
+
+      <SearchInput
+        placeholder="Your search text"
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
+
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>All Items</Text>
+      </View>
+
       <Divider style={{ backgroundColor: 'gray' }} />
 
       {loading ? (
@@ -207,6 +232,18 @@ const styles = StyleSheet.create({
   },
   scrollWrapper: {
     flexGrow: 1,
+  },
+  titleContainer: {
+    height: 80,
+    paddingLeft: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleText: {
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'left',
+    color: Colors.h2,
   },
 })
 

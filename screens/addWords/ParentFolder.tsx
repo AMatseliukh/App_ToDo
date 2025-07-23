@@ -13,10 +13,13 @@ const ParentFolder: React.FC<ParentFolderProps> = ({ folderName }) => {
         marginTop: 8,
       }}
     >
+    
       <Text style={{ fontSize: 18, color: '#000' }}>Parent folder: </Text>
       <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>
         root
       </Text>
     </View>
   );
-};export default ParentFolder;
+};
+
+export default ParentFolder;

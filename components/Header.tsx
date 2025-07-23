@@ -1,8 +1,8 @@
 // import { useRouter } from "expo-router";
-import { Colors } from "@/constants/Colors";
-import BonusBadge from "@/screens/home/components/BonusBadge";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Colors } from "@/constants/Colors";
+import BonusBadge from "@/screens/home/components/BonusBadge";
 
 interface HeaderProps {
   title?: string;
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 20,
     fontWeight: "600",
-    color: Colors.titleText,
+    color: Colors.h1,
   },
 });
 

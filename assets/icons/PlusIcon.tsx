@@ -1,7 +1,8 @@
 import * as React from "react";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Entypo from '@expo/vector-icons/Entypo';
 
 const PlusIcon = () => (
-  <MaterialIcons name="add-circle-outline" size={40} color="black" />
+  <Entypo name="plus" size={24} color="black" />
+
 )
 export default PlusIcon;
