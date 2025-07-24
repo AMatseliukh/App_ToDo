@@ -2,6 +2,8 @@ import React, { FC, JSX } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 
+import DotsVertical from '@/assets/icons/DotsVertical';
+import Repository from '@/assets/icons/Repository';
 import ArchiveIcon from '../../../assets/icons/ArchiveIcon';
 import ArrowDropDown from '../../../assets/icons/ArrowDropDown';
 import ArrowRight from '../../../assets/icons/ArrowRight';
@@ -9,8 +11,6 @@ import CardsIcon from '../../../assets/icons/CardsIcon';
 import ChatIcon from '../../../assets/icons/ChatIcon';
 import FolderIcon from '../../../assets/icons/FolderIcon';
 import GloboIcon from '../../../assets/icons/GlobeIcon';
-import DotsVertical from '@/assets/icons/DotsVertical';
-import Repository from '@/assets/icons/Repository';
 
 const IconMap: Record<string, JSX.Element> = {
   FolderIcon: <FolderIcon />,
@@ -26,14 +26,14 @@ const IconMap: Record<string, JSX.Element> = {
 
 interface Props {
   name: string;
-  type: "folder | deck | repository_folder | repository_deck";
+  type: "folder" | "deck"| "repository_folder" | "repository_deck";
   // childrenCount: number;
   isUnpublishedChangesPresent: boolean;
   isOutOfSync: boolean;
   isPublished: boolean;
-  description: string;
-  itemStatus: string;
-  typeIconName?: string | null;
+  author: string | undefined;
+  // itemStatus: string;
+  // typeIconName?: string | null;
   actionIconName?: string | null;
   onItemPress?: () => void;
 }
@@ -45,9 +45,9 @@ const ListItem: FC<Props> = ({
   isUnpublishedChangesPresent,
   isOutOfSync,
   isPublished,
-  description,
-  itemStatus,
-  typeIconName,
+  author,
+  // itemStatus,
+  // typeIconName,
   actionIconName,
   onItemPress,
 
@@ -55,10 +55,10 @@ const ListItem: FC<Props> = ({
 // }: Props) => {
 //   const isCentered = align === 'center';
 }) => {
-  const typeIconComponent =
-    typeIconName && IconMap[typeIconName]
-      ? IconMap[typeIconName]
-      : null;
+  // const typeIconComponent =
+  //   typeIconName && IconMap[typeIconName]
+  //     ? IconMap[typeIconName]
+  //     : null;
 
   const TrailingIconComponent =
     actionIconName && IconMap[actionIconName]
@@ -75,16 +75,16 @@ const ListItem: FC<Props> = ({
           )}
           description={() => (
             <View>
-              {description ? (
+              {author ? (
                 <Text style={styles.textDescription} numberOfLines={3}>
-                  {description}
+                  {author}
                 </Text>
               ) : null}
-              {itemStatus ? (
+              {/* {itemStatus ? (
                 <Text style={styles.itemStatus} numberOfLines={3}>
                   {itemStatus}
                 </Text>
-              ) : null}
+              ) : null} */}
             </View>
   )}        onPress={onItemPress}
         titleNumberOfLines={3} // або undefined
@@ -94,7 +94,7 @@ const ListItem: FC<Props> = ({
           // typeIconComponent ? 
           (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              {typeIconComponent}
+              <FolderIcon />
             </View>
           ) 
           // : null
@@ -108,7 +108,7 @@ const ListItem: FC<Props> = ({
                 marginRight: 4,
               }}
             >
-              {TrailingIconComponent}
+              <DotsVertical />
             </View>
           ) : null
         }

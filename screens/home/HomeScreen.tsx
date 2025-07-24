@@ -5,11 +5,10 @@ import {
   Animated,
   Easing,
   FlatList,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
 import { ActivityIndicator, Divider } from 'react-native-paper';
 
@@ -19,9 +18,8 @@ import FloatingMenu from '@/screens/home/components/FloatingMenu';
 import Header from '../../components/Header';
 import { folderStructure } from '../../dataFolder';
 // import ListItem from './components/ListItem';
-import Recent from './components/Recent';
-import SearchInput from './components/SearchInput';
 import ListItem from './components/ListItem';
+import SearchInput from './components/SearchInput';
 // import Animated from 'react-native-reanimated';
 
 const recentDecksGroupItemIndex = '1';
@@ -58,6 +56,9 @@ const HomeScreen = () => {
   const flatListData = filteredData.filter(
     (item) => !excludedIds.includes(item.id),
   );
+
+  const pointDevider = 
+    <View style={styles.pointDevider}></View>
 
   // const flatListData = filteredData.filter(
   //   (item) => !excludedIds.includes(item.id) && Number(item.id) >= listItemsStartId,
@@ -140,17 +141,16 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <ListItem
             name={item.name}
-            description={item.childrenCount.toString() + ' ' + item.textDescr}
-            itemStatus={item.folderDeckStatus}
-            typeIconName={item.typeIcon}
+            author={item.childrenCount.toString() + ' ' + item.textDescr + ' ' + item.authorName}
+            // itemStatus={item.folderDeckStatus}
+            // typeIconName={item.typeIcon}
             actionIconName={item.actionElement}
-            onItemPress={() => alert(`Item pressed: ${item.id}`)} 
-            type={'folder | deck | repository_folder | repository_deck'} 
+            onItemPress={() => alert(`Item pressed: ${item.id}`)}
+            // type={"folder" | "deck"| "repository_folder" | "repository_deck"}
             // childrenCount={0} 
-            isUnpublishedChangesPresent={false} 
-            isOutOfSync={false} 
-            isPublished={false}         
-          />
+            isUnpublishedChangesPresent={false}
+            isOutOfSync={false}
+            isPublished={false} type={'folder'}          />
         )}
         scrollEnabled={false}
       />
@@ -245,6 +245,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Colors.h2,
   },
+  pointDevider: {
+    width: 8,
+    height: 8,
+  }
 })
 
 export default HomeScreen;

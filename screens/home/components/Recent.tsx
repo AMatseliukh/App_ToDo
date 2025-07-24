@@ -3,10 +3,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
 } from 'react-native-reanimated';
 import ListItem from './ListItem';
 
@@ -58,7 +58,7 @@ const Recent: FC<Props> = ({ title, data }) => {
           <View key={item.id}>
             <ListItem
               name={item.name}
-              description=''
+              author=''
               typeIconName={item.typeIcon}
               actionIconName={item.actionElement}
               onItemPress={() => alert(`Pressed: ${item.name}`)} type={'folder | deck | repository_folder | repository_deck'} childrenCount={0} isUnpublishedChangesPresent={false} isOutOfSync={false} isPublished={false}            />

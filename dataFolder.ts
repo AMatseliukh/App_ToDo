@@ -5,6 +5,7 @@ interface FolderItem {
   childrenCount: string;
   // childrenCount: number;
   textDescr: string;
+  authorName: string;
   folderDeckStatus: string;
   actionElement: string | null;
   isRecentItem?: boolean;
@@ -17,6 +18,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Recent Deck',
     childrenCount: '',
     textDescr: '',
+    authorName: '',
     folderDeckStatus: '',
     actionElement: 'ArrowDropDown',
     // isRecentItem: undefined
@@ -27,6 +29,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Chapter 1',
     childrenCount: '',
     textDescr: 'PockVoc → English for Everyone Course...',
+    authorName: '',
     folderDeckStatus: '',
     actionElement: 'GloboIcon',
     isRecentItem: true,
@@ -37,6 +40,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Marvel heroes',
     childrenCount: '',
     textDescr: 'PockVoc',
+    authorName: '',
     folderDeckStatus: '',
     actionElement: '',
     isRecentItem: true,
@@ -47,6 +51,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Unit1',
     childrenCount: '',
     textDescr: 'Halyna Fedorivna → Opportunities 11 form',
+    authorName: '',
     folderDeckStatus: '',
     actionElement: 'GloboIcon',
     isRecentItem: true,
@@ -58,6 +63,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Spanish Basics',
     childrenCount: '2',
     textDescr: 'items',
+    authorName: '',
     folderDeckStatus: 'Unpublished changes',
     actionElement: 'DotsVertical',
   },
@@ -67,6 +73,7 @@ export const folderStructure: FolderItem[] = [
     name: 'French Food',
     childrenCount: '3',
     textDescr: 'words',
+    authorName: '',
     folderDeckStatus: 'Draft',
     actionElement: 'DotsVertical',
   },
@@ -76,6 +83,7 @@ export const folderStructure: FolderItem[] = [
     name: 'EnglishTeacherUA',
     childrenCount: '1',
     textDescr: 'item',
+    authorName: '"&#183" by EnglishTeacherUA',
     folderDeckStatus: '',
     actionElement: 'DotsVertical',
   },
@@ -86,6 +94,7 @@ export const folderStructure: FolderItem[] = [
     name: 'Spanish Basics',
     childrenCount: '2',
     textDescr: 'items',
+    authorName: '',
     folderDeckStatus: 'Unpublished changes',
     actionElement: 'DotsVertical',
   },
@@ -95,6 +104,7 @@ export const folderStructure: FolderItem[] = [
     name: 'French Food',
     childrenCount: '3',
     textDescr: 'words',
+    authorName: '',
     folderDeckStatus: 'Draft',
     actionElement: 'DotsVertical',
   },
@@ -104,6 +114,7 @@ export const folderStructure: FolderItem[] = [
     name: 'EnglishTeacherUA',
     childrenCount: '1',
     textDescr: 'item',
+    authorName: '* by EnglishTeacherUA',
     folderDeckStatus: '',
     actionElement: 'DotsVertical',
   },
