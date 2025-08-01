@@ -1,8 +1,8 @@
 import * as React from "react";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const FolderIcon = () => (  
-  <MaterialIcons name="folder" size={24} color="black" />
+  <FontAwesome name="folder-o" size={24} color="black" /> 
 )
 
 export default FolderIcon;

@@ -1,28 +1,29 @@
-import { Colors } from '@/constants/Colors';
 import React, { FC, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import ListItem from './ListItem';
+import { Colors } from '@/constants/Colors';
 
 interface RecentItem {
   id: string;
   name: string;
-  description: string;
-  textDescr?: string;
-  typeIcon?: string | null;
-  actionElement?: string | null;
+  type: 'folder' | 'deck' | 'repository_folder' | 'repository_deck';
+  childrenCount: string;
+  isUnpublishedChangesPresent: boolean;
+  isOutOfSync: boolean;
+  isPublished: boolean;
+  onItemPress?: () => void;
 }
 
 interface Props {
   title: string;
-  data: RecentItem[];
-  description: string;
+  data: RecentItem[];  
 }
 
 const Recent: FC<Props> = ({ title, data }) => {
@@ -59,9 +60,15 @@ const Recent: FC<Props> = ({ title, data }) => {
             <ListItem
               name={item.name}
               author=''
-              typeIconName={item.typeIcon}
-              actionIconName={item.actionElement}
-              onItemPress={() => alert(`Pressed: ${item.name}`)} type={'folder | deck | repository_folder | repository_deck'} childrenCount={0} isUnpublishedChangesPresent={false} isOutOfSync={false} isPublished={false}            />
+              type={item.type} 
+              childrenCount={item.childrenCount} 
+              // itemStatus={item.itemStatus}
+              // itemStatusColor={item.itemStatusColor}
+              isUnpublishedChangesPresent={false} 
+              isOutOfSync={false} 
+              isPublished={false} 
+              onItemPress={() => alert(`Pressed: ${item.name}`)}           
+            />
           </View>
         ))}
     </View>

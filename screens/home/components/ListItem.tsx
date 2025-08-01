@@ -4,6 +4,7 @@ import { Divider, List } from 'react-native-paper';
 
 import DotsVertical from '@/assets/icons/DotsVertical';
 import Repository from '@/assets/icons/Repository';
+import { Colors } from '@/constants/Colors';
 import ArchiveIcon from '../../../assets/icons/ArchiveIcon';
 import ArrowDropDown from '../../../assets/icons/ArrowDropDown';
 import ArrowRight from '../../../assets/icons/ArrowRight';
@@ -27,43 +28,67 @@ const IconMap: Record<string, JSX.Element> = {
 interface Props {
   name: string;
   type: "folder" | "deck"| "repository_folder" | "repository_deck";
-  // childrenCount: number;
+  childrenCount: string;
+  author: string | undefined;
   isUnpublishedChangesPresent: boolean;
   isOutOfSync: boolean;
   isPublished: boolean;
-  author: string | undefined;
-  // itemStatus: string;
-  // typeIconName?: string | null;
-  actionIconName?: string | null;
   onItemPress?: () => void;
 }
 
 const ListItem: FC<Props> = ({
   name,
   type,
-  // childrenCount,
+  childrenCount,
+  author,
   isUnpublishedChangesPresent,
   isOutOfSync,
   isPublished,
-  author,
-  // itemStatus,
-  // typeIconName,
-  actionIconName,
   onItemPress,
-
-//   align = 'left',
-// }: Props) => {
-//   const isCentered = align === 'center';
 }) => {
-  // const typeIconComponent =
-  //   typeIconName && IconMap[typeIconName]
-  //     ? IconMap[typeIconName]
-  //     : null;
+  const getChildrenCountText = () => {
+    const contentParts = [childrenCount];
 
-  const TrailingIconComponent =
-    actionIconName && IconMap[actionIconName]
-      ? IconMap[actionIconName]
-      : null;
+    if (type == 'folder' || type == 'repository_folder') {
+      contentParts.push('items');
+    } else {
+      contentParts.push('words');
+    }
+
+    if (author) {
+      contentParts.push(`• by ${author}`);
+    }
+
+    return contentParts.join(' ');
+  };
+
+  const getTypeIcon = () => {
+    if (type === 'folder') {
+      return <FolderIcon />;
+    }
+    if (type === 'repository_folder') {
+      return <Repository />;
+    }
+    if (type === 'deck') {
+      return <CardsIcon />;
+    }
+    return <></>;
+  };
+
+  
+  const getItemStatusElement = () => {
+    if (!isPublished) {
+      return <></>;
+    }
+
+    if (isUnpublishedChangesPresent) {
+      return ( <Text style={[styles.itemStatus, { color: Colors.unpublished }]}>Unpublished changes</Text> )
+    }
+    if (isOutOfSync) {
+      return ( <Text style={[styles.itemStatus, { color: Colors.outOfDate }]}>Out of date</Text> )
+    }
+      return ( <Text style={[styles.itemStatus, { color: Colors.published }]}>Up to date</Text> )
+  }
 
   return (
     <View>
@@ -75,32 +100,25 @@ const ListItem: FC<Props> = ({
           )}
           description={() => (
             <View>
-              {author ? (
-                <Text style={styles.textDescription} numberOfLines={3}>
-                  {author}
-                </Text>
-              ) : null}
-              {/* {itemStatus ? (
-                <Text style={styles.itemStatus} numberOfLines={3}>
-                  {itemStatus}
-                </Text>
-              ) : null} */}
+              <Text style={styles.textDescription} numberOfLines={3}>
+                {getChildrenCountText()}
+              </Text>
+
+              {getItemStatusElement()}
+
             </View>
-  )}        onPress={onItemPress}
-        titleNumberOfLines={3} // або undefined
-        descriptionNumberOfLines={3} // або undefined
-        // contentStyle={isCentered ? { alignItems: 'center' } : {}}
-        left={() =>
-          // typeIconComponent ? 
+        )}        
+        onPress={onItemPress}
+        titleNumberOfLines={3}
+        descriptionNumberOfLines={3}
+        left={(props) =>
           (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <FolderIcon />
+              {getTypeIcon()}
             </View>
           ) 
-          // : null
         }
-        right={(props) =>
-          TrailingIconComponent ? (
+        right={(props) =>(
             <View
               style={{
                 justifyContent: 'center',
@@ -110,7 +128,7 @@ const ListItem: FC<Props> = ({
             >
               <DotsVertical />
             </View>
-          ) : null
+          )
         }
         style={{
           minHeight: 80,
@@ -136,12 +154,9 @@ const styles = StyleSheet.create({
     color: '#71717a',
   },
   itemStatus: {
-    color: '#d97706',
+    // color: '#d97706',
     fontSize: 12,
   }
-
 })
-
-
 
 export default ListItem;

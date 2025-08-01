@@ -5,6 +5,7 @@ import {
   Animated,
   Easing,
   FlatList,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,10 +18,9 @@ import { Colors } from '@/constants/Colors';
 import FloatingMenu from '@/screens/home/components/FloatingMenu';
 import Header from '../../components/Header';
 import { folderStructure } from '../../dataFolder';
-// import ListItem from './components/ListItem';
 import ListItem from './components/ListItem';
+import Recent from './components/Recent';
 import SearchInput from './components/SearchInput';
-// import Animated from 'react-native-reanimated';
 
 const recentDecksGroupItemIndex = '1';
   const listItemsStartId = 5;
@@ -41,14 +41,17 @@ const fuse = new Fuse(folderStructure, {
   threshold: 0.3, // чутливість
 });
 
-const HomeScreen = () => {
 
+
+
+const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(folderStructure);
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
+  const rotation = useRef(new Animated.Value(0)).current;
 
   const handleGoBack = () => {
     router.back();
@@ -56,15 +59,6 @@ const HomeScreen = () => {
   const flatListData = filteredData.filter(
     (item) => !excludedIds.includes(item.id),
   );
-
-  const pointDevider = 
-    <View style={styles.pointDevider}></View>
-
-  // const flatListData = filteredData.filter(
-  //   (item) => !excludedIds.includes(item.id) && Number(item.id) >= listItemsStartId,
-  // );
-
-  const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(rotation, {
@@ -102,35 +96,18 @@ const HomeScreen = () => {
     }
   };
 
-  // const recentContent = () => (
-  //   <View style={{ paddingHorizontal: 8 }}>
-  //           {/* Акордеон Recent */}
-  //     <Pressable
-  //       className="flex-row items-center justify-between h-20 w-full"
-  //       onPress={() => setExpanded(!expanded)}
-  //       >
-  //       <Recent title={recentTitle} data={recentItems} />
-  //       {/* <Pressable onPress={() => setExpanded(!expanded)}>
-  //         <Animated.View style={animatedStyle}>
-  //           <IconButton icon="arrow-left" size={24} />
-  //         </Animated.View>
-  //       </Pressable> */}
-  //     </Pressable>
+  const recentContent = () => (
+    <View style={{ paddingHorizontal: 8 }}>
+            {/* Акордеон Recent */}
+      <Pressable
+        className="flex-row items-center justify-between h-20 w-full"
+        onPress={() => setExpanded(!expanded)}
+        >
+        <Recent title={recentTitle} data={recentItems} />
+      </Pressable>
 
-  //     {/* Accordion Items */}
-  //       {expanded &&
-  //       recentItems.map((item) => (
-  //         <View key={item.id}>
-  //           <ListItem
-  //             name={item.name}
-  //             description={item.textDescr}
-  //             typeIconName={item.typeIcon}
-  //             actionIconName={item.actionElement}
-  //             onItemPress={() => alert(`Accordion item pressed: ${item.id}`)} type={'folder | deck | repository_folder | repository_deck'} childrenCount={0} isUnpublishedChangesPresent={false} isOutOfSync={false} isPublished={false}            />
-  //         </View>
-  //       ))}
-  //   </View>
-  // )
+    </View>
+  )
 
   const listItemContent = () => (
     <View style={{ paddingHorizontal: 8 }}>  
@@ -141,16 +118,14 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <ListItem
             name={item.name}
-            author={item.childrenCount.toString() + ' ' + item.textDescr + ' ' + item.authorName}
-            // itemStatus={item.folderDeckStatus}
-            // typeIconName={item.typeIcon}
-            actionIconName={item.actionElement}
+            type={item.type}
+            childrenCount={item.childrenCount}
+            author={item.author}
             onItemPress={() => alert(`Item pressed: ${item.id}`)}
-            // type={"folder" | "deck"| "repository_folder" | "repository_deck"}
-            // childrenCount={0} 
-            isUnpublishedChangesPresent={false}
-            isOutOfSync={false}
-            isPublished={false} type={'folder'}          />
+            isUnpublishedChangesPresent={item.isUnpublishedChangesPresent}
+            isOutOfSync={item.isOutOfSync}
+            isPublished={item.isPublished}          
+          />
         )}
         scrollEnabled={false}
       />
@@ -188,10 +163,14 @@ const HomeScreen = () => {
         items={floatingMenu}
       />
 
-      {/* {recentContent()}; */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Recent Deck</Text>
-      </View>
+      {loading ? (
+        <View style={styles.loaderWrapper}>
+          <ActivityIndicator animating={true} size="large" />
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollWrapper}>
+
+      {recentContent()};
 
       <SearchInput
         placeholder="Your search text"
@@ -204,13 +183,7 @@ const HomeScreen = () => {
       </View>
 
       <Divider style={{ backgroundColor: 'gray' }} />
-
-      {loading ? (
-        <View style={styles.loaderWrapper}>
-          <ActivityIndicator animating={true} size="large" />
-        </View>
-      ) : (
-        <ScrollView contentContainerStyle={styles.scrollWrapper}>
+      
           {listItemContent()}
         </ScrollView>
       )}

@@ -25,4 +25,8 @@ export const Colors = {
   },
   h1: '#09090b',
   h2: '#71717a',
+  unpublished: '#d97706',
+  published: '#16a34a',
+  outOfDate: '#dc2626',
+  text: '#71717a'
 };

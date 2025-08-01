@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import BonusBadge from "@/screens/home/components/BonusBadge";
+import { router } from "expo-router";
 
 interface HeaderProps {
   title?: string;
@@ -24,9 +25,9 @@ const Header: React.FC<HeaderProps> = ({
   hideBackIcon = false,
   hideActionMenuIcon = false,
 }) => {
-  // const handleGoBack = () => {
-  //   router.back();
-  // };
+  const handleGoBack = () => {
+    router.back();
+  };
   return (
     <View style={styles.wrapper}>
       {/* Back Icon */}
