@@ -1,6 +1,6 @@
 import React, { FC, JSX } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Divider, List } from 'react-native-paper';
+import { List } from 'react-native-paper';
 
 import DotsVertical from '@/assets/icons/DotsVertical';
 import Repository from '@/assets/icons/Repository';
@@ -29,7 +29,7 @@ interface Props {
   name: string;
   type: "folder" | "deck"| "repository_folder" | "repository_deck";
   childrenCount: string;
-  author: string | undefined;
+  author?: string;
   isUnpublishedChangesPresent: boolean;
   isOutOfSync: boolean;
   isPublished: boolean;
@@ -49,7 +49,7 @@ const ListItem: FC<Props> = ({
   const getChildrenCountText = () => {
     const contentParts = [childrenCount];
 
-    if (type == 'folder' || type == 'repository_folder') {
+    if (type === 'folder' || type === 'repository_folder') {
       contentParts.push('items');
     } else {
       contentParts.push('words');
@@ -104,7 +104,7 @@ const ListItem: FC<Props> = ({
                 {getChildrenCountText()}
               </Text>
 
-              {getItemStatusElement()}
+              <Text>{getItemStatusElement()}</Text>
 
             </View>
         )}        
@@ -138,7 +138,6 @@ const ListItem: FC<Props> = ({
           alignItems: 'center',
         }}
       />
-      <Divider style={{ backgroundColor: 'gray' }} />
     </View>
   );
 };

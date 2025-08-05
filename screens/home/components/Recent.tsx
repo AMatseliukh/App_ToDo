@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Divider, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -15,6 +15,7 @@ interface RecentItem {
   name: string;
   type: 'folder' | 'deck' | 'repository_folder' | 'repository_deck';
   childrenCount: string;
+  author?: string;
   isUnpublishedChangesPresent: boolean;
   isOutOfSync: boolean;
   isPublished: boolean;
@@ -52,21 +53,17 @@ const Recent: FC<Props> = ({ title, data }) => {
         </Animated.View>
       </Pressable>
 
-      <Divider style={styles.divider} />
-
       {expanded &&
         data.map((item) => (
           <View key={item.id}>
             <ListItem
               name={item.name}
-              author=''
+              author={item.author}
               type={item.type} 
               childrenCount={item.childrenCount} 
-              // itemStatus={item.itemStatus}
-              // itemStatusColor={item.itemStatusColor}
-              isUnpublishedChangesPresent={false} 
-              isOutOfSync={false} 
-              isPublished={false} 
+              isUnpublishedChangesPresent={item.isUnpublishedChangesPresent} 
+              isOutOfSync={item.isOutOfSync} 
+              isPublished={item.isPublished} 
               onItemPress={() => alert(`Pressed: ${item.name}`)}           
             />
           </View>
@@ -96,10 +93,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Colors.h2,
   },
-  divider: {
-    marginRight: 48,
-    backgroundColor: '#ccc',
-  },
+
 });
 
 export default Recent;

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
 import Diamond from '@/assets/icons/Diamond';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-const BonusBadge = () => {
+const CoinsBadge = () => {
   const bonusCount = 100;
 
   return (
@@ -25,13 +25,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     backgroundColor: '#f59e081a',
     borderColor: '#f59e08',
-    // Тінь для iOS
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 3,
-    // Тінь для Android
-    // elevation: 4,
   },
   text: {
     fontSize: 16,
@@ -40,4 +33,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BonusBadge;
+export default CoinsBadge;

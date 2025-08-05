@@ -1,9 +1,9 @@
 // import { useRouter } from "expo-router";
+import { Colors } from "@/constants/Colors";
+import CoinsBadge from "@/screens/home/components/CoinsBadge";
+import { router } from "expo-router";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import BonusBadge from "@/screens/home/components/BonusBadge";
-import { router } from "expo-router";
 
 interface HeaderProps {
   title?: string;
@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
         <Text style={styles.titleText} numberOfLines={1}>
           {title}
         </Text>
-        <BonusBadge />
+        <CoinsBadge />
       </View>
 
       {/* Action Menu Icon */}

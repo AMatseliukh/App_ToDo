@@ -11,7 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { ActivityIndicator, Divider } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { Colors } from '@/constants/Colors';
@@ -37,12 +37,9 @@ const recentDecksGroupItemIndex = '1';
 );
 
 const fuse = new Fuse(folderStructure, {
-  keys: ['name', 'textDescr'],
+  keys: ['name', 'author'],
   threshold: 0.3, // чутливість
 });
-
-
-
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -98,7 +95,7 @@ const HomeScreen = () => {
 
   const recentContent = () => (
     <View style={{ paddingHorizontal: 8 }}>
-            {/* Акордеон Recent */}
+            {/* Accordion Recent */}
       <Pressable
         className="flex-row items-center justify-between h-20 w-full"
         onPress={() => setExpanded(!expanded)}
@@ -181,8 +178,6 @@ const HomeScreen = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>All Items</Text>
       </View>
-
-      <Divider style={{ backgroundColor: 'gray' }} />
       
           {listItemContent()}
         </ScrollView>
@@ -191,6 +186,8 @@ const HomeScreen = () => {
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

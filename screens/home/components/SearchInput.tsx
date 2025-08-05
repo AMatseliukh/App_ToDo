@@ -8,6 +8,8 @@ type SearchInputProps = {
   value: string;
   onChangeText: (text: string) => void;
 };
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const [searchQuery, setSearchQuery] = React.useState('');
 
 const SearchInput: React.FC<SearchInputProps> = ({
   placeholder,
@@ -15,12 +17,17 @@ const SearchInput: React.FC<SearchInputProps> = ({
   onChangeText,
 }) => {
   return (
-    <View style={{ width: '100%', paddingHorizontal: 12  }}>
+    <View style={{ width: '100%', paddingHorizontal: 12 }}>
       <Searchbar
+      placeholder="Search"
+      onChangeText={setSearchQuery}
+      value={searchQuery}
+    />
+      {/* <Searchbar
         placeholder={placeholder}
         onChangeText={onChangeText}
         value={value}
-      />
+      /> */}
     </View>
   );
 };

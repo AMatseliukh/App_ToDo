@@ -21,7 +21,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   items,
 }) => {
   if (!visible) {
-    return null;
+    return <></>;
   }
 
   return (
